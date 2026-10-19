@@ -144,7 +144,8 @@ export class Workspace {
     readonly signal?: AbortSignal,
   ) {
     // Capture once: Windows 8.3 aliases and casing are normalized before any approval wait.
-    this.root = realpathSync(root);
+    // Match fs.promises.realpath's native implementation; the JS sync variant can retain 8.3 aliases.
+    this.root = realpathSync.native(root);
   }
   resolve(file: string, writing = false): Promise<string> {
     return projectPath(this.root, file, { writing, expectedRoot: this.root });
