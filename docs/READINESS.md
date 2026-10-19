@@ -15,7 +15,7 @@
 | AxiomTune | Opt-in local Transformers/PEFT QLoRA, licensed JSONL validator, leakage/PII filters, masking, checkpoints/resume, LoRA conversion script | Five validator tests and Python syntax pass. CUDA dependency resolution, training/OOM/restart/export/inference compatibility and before/after coding quality untested. TRL/Unsloth not integrated |
 | Optional account | Exact website start/poll/cli contract; explicit browser consent; DPAPI/Secret Service; logout revocation; companion account token management | Client protocol tests and server ownership/revocation unit tests pass. **No live HTTPS API, database or test-account login**. macOS secret store pending |
 | Distribution | Local npm tarball, pinned Node dependencies, EN/RU docs, NOTICE/licenses/SBOM, explicit update and rollback archive | Build/pack and local installation tested; npm publication not authorized/performed. Live published-version update/rollback pending |
-| CI | Windows/Linux Node 22/24; Python checks; separate opt-in self-hosted Windows NVIDIA job | Local Linux checks pass. GitHub run links/results are recorded below after publication; configuring GPU job is not a GPU pass |
+| CI | Windows/Linux Node 22/24; Python checks; separate opt-in self-hosted Windows NVIDIA job | Windows/Linux Node 22/24 hosted matrix passes (linked below), including packed installation. GPU job skipped; this is not a GPU pass |
 | Security/recovery | Threat model, strict paths/protocols, size/time limits, token redaction, atomic writes/journals | See SECURITY.md for residual same-user races, detached processes, crash journals and unverified publisher signatures |
 
 ## Gates before a stable V1 tag
@@ -29,4 +29,12 @@
 
 ## Recorded checks
 
-Local `npm run check`, Node tests, protocol smoke, Python validator/syntax, `npm pack --dry-run`, isolated prefix package installation and `npm audit --omit=dev` are recorded during candidate development. Local results: 82/82 Node tests, 5/5 Python validator tests, 7/7 companion server unit tests. Isolated npm global-prefix installation passes version/catalog/doctor checks. Production npm audit: zero known advisories. GitHub CI results are recorded after publication. No Windows desktop, GPU or live-account result is implied by Linux tests.
+Local `npm run check`, Node tests, protocol smoke, Python validator/syntax, `npm pack --dry-run`, isolated prefix package installation and `npm audit --omit=dev` are recorded during candidate development. Local results: 82/82 Node tests, 5/5 Python validator tests, 7/7 companion server unit tests. Isolated npm global-prefix installation passes version/catalog/doctor checks. Production npm audit: zero known advisories. The full hosted matrix passed on code commit b2227692090211984a214d67dffbcb88e27f121e: [CLI CI run 39209777952](https://github.com/zaoastronaftik-bit/axiom-pilot-code/actions/runs/39209777952). Companion server CI passed on 40565a9d438497159e98b02a3911194251c4079b: [website/API run 39183076059](https://github.com/zaoastronaftik-bit/axiom-pilot-code.PAGES/actions/runs/39183076059). Hosted Windows is Windows Server 2025, not the required Windows 11 / NVIDIA desktop. The GPU job was skipped. See [validation.json](validation.json). No Windows desktop, GPU or live-account result is implied by Linux tests.
+
+## Published candidate
+
+- [CLI source and review](https://github.com/zaoastronaftik-bit/axiom-pilot-code/pull/1), branch `feat/v1-candidate`.
+- [Companion server/account token revocation](https://github.com/zaoastronaftik-bit/axiom-pilot-code.PAGES/pull/1), branch `feat/cli-token-revocation`.
+- Both PRs remain draft because the acceptance gates above are open. No npm package or stable tag was published.
+
+Windows CI exposed inconsistent 8.3 path normalization between Node realpath implementations and a packaged entrypoint alias mismatch. Both were fixed without relaxing symlink/junction or concurrent-edit rejection; all 82 tests pass on both hosted operating systems. The package smoke honors only proxy/cache transport settings needed for dependency installation and does not forward account/project secrets.
