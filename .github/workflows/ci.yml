@@ -1,14 +1,16 @@
 name: CI
 on:
   push:
-    branches: [main]
+    branches: [main, 'feat/**']
   pull_request:
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         node: [22, 24]
@@ -17,7 +19,29 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - run: npm ci --ignore-scripts
       - run: npm run check
       - run: npm test
+      - run: npm run smoke
+      - run: python -m unittest discover -s training -p test_*.py
+      - run: python -m py_compile training/train.py training/export.py training/validate.py
       - run: npm run pack:dry
+      - run: npm run smoke:package
+      - run: npm audit --omit=dev --audit-level=moderate
+  gpu:
+    if: github.event_name == 'workflow_dispatch' && vars.AXIOM_GPU_CI == 'enabled'
+    runs-on: [self-hosted, Windows, X64, axiom-nvidia-12gb]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts
+      - run: npm run smoke:gpu
+        env:
+          AXIOM_GPU_SMOKE_CONSENT: 'yes'
+          # Owner provisions an isolated runner, runtime and model explicitly first.

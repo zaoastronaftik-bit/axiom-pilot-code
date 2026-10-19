@@ -1,6 +1,12 @@
 node_modules/
-*.log
+dist/
+*.tgz
+*.part
+*.gguf
 .env
-.DS_Store
-coverage/
-.nyc_output/
+.env.*
+!*.example
+__pycache__/
+.venv/
+training/output/
+bench/results/

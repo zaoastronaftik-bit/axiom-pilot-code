@@ -1,0 +1,440 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "serialNumber": "urn:uuid:b6fda7f1-eb3c-4d10-9da5-bc25e3eab2de",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-10-19T00:51:13.218Z",
+    "lifecycles": [
+      {
+        "phase": "build"
+      }
+    ],
+    "tools": [
+      {
+        "vendor": "npm",
+        "name": "cli",
+        "version": "11.9.0"
+      }
+    ],
+    "component": {
+      "bom-ref": "axiom-pilot-code@1.0.0-alpha.1",
+      "type": "library",
+      "name": "axiom-pilot-code",
+      "version": "1.0.0-alpha.1",
+      "scope": "required",
+      "description": "Local-first coding agent with managed llama.cpp and LM Studio compatibility",
+      "purl": "pkg:npm/axiom-pilot-code@1.0.0-alpha.1",
+      "properties": [],
+      "externalReferences": [
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/zaoastronaftik-bit/axiom-pilot-code.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/zaoastronaftik-bit/axiom-pilot-code#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/zaoastronaftik-bit/axiom-pilot-code/issues"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "bom-ref": "@types/node@22.19.15",
+      "type": "library",
+      "name": "@types/node",
+      "version": "22.19.15",
+      "scope": "required",
+      "description": "TypeScript definitions for node",
+      "purl": "pkg:npm/%40types/node@22.19.15",
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@types/node/-/node-22.19.15.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "17447f876f9db32e7024051eded014ea8a9adaa6d66394e935f2ff4469a8d72dfc862c8ed70df1da33edb7beb09ae6892380d09ce06edb570d5d0d924c85145a"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@types/yauzl@2.10.3",
+      "type": "library",
+      "name": "@types/yauzl",
+      "version": "2.10.3",
+      "scope": "required",
+      "description": "TypeScript definitions for yauzl",
+      "purl": "pkg:npm/%40types/yauzl@2.10.3",
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@types/yauzl/-/yauzl-2.10.3.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/yauzl"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "a09a1fb6fd0b4ae683644dcb7b80db297f8a4bd1b7e8dcce7926a9f745082b4c8c03f36128986a9521ad3433913516886d07f38d70eb41ad32b49ea63511b3fd"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "ignore@7.0.5",
+      "type": "library",
+      "name": "ignore",
+      "version": "7.0.5",
+      "scope": "required",
+      "author": "kael",
+      "description": "Ignore is a manager and filter for .gitignore rules, the one used by eslint, gitbook and many others.",
+      "purl": "pkg:npm/ignore@7.0.5",
+      "properties": [],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/ignore/-/ignore-7.0.5.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git@github.com:kaelzhang/node-ignore.git"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/kaelzhang/node-ignore/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "1ece7dc4135f508ba730581601b197e5cabaf3ddc86d68382a7ae36d8c17dedc74ceda2b5604c303a076b317fc7a31c9e30cfc06a194318967ccd05eaf936f1a"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "pend@1.2.0",
+      "type": "library",
+      "name": "pend",
+      "version": "1.2.0",
+      "scope": "required",
+      "author": "Andrew Kelley <superjoe30@gmail.com>",
+      "description": "dead-simple optimistic async helper",
+      "purl": "pkg:npm/pend@1.2.0",
+      "properties": [],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/pend/-/pend-1.2.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git://github.com/andrewrk/node-pend.git"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/andrewrk/node-pend/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "1776acbf8d94b97721773b7ec57a9f5b538695505efa6c5ada6a88d29839c801d93ef16663763a76b49ffc643503ce9681610df4ace1fd6ae029aea219c1d72e"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "prettier@3.6.2",
+      "type": "library",
+      "name": "prettier",
+      "version": "3.6.2",
+      "scope": "required",
+      "author": "James Long",
+      "description": "Prettier is an opinionated code formatter",
+      "purl": "pkg:npm/prettier@3.6.2",
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/prettier/-/prettier-3.6.2.tgz"
+        },
+        {
+          "type": "website",
+          "url": "https://prettier.io"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "23b0088396e802be51d0516d27aac27c3f8b16c587a7cd5da25ac50fc4bbf54f6d6fc033da71ab2677273129f2b3e6e94097d1533aacf619c0f35380037842b9"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "typescript@5.9.3",
+      "type": "library",
+      "name": "typescript",
+      "version": "5.9.3",
+      "scope": "required",
+      "author": "Microsoft Corp.",
+      "description": "TypeScript is a language for application scale JavaScript development",
+      "purl": "pkg:npm/typescript@5.9.3",
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/microsoft/TypeScript.git"
+        },
+        {
+          "type": "website",
+          "url": "https://www.typescriptlang.org/"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/microsoft/TypeScript/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "8e5d6f6733c38a72ebf5e52ddc9feded5e8580d130f508ef04f772b33f4a7d00c3e357d0ac2d98e2f290762694a454f86d795bd511e12e9a7cc2d9ba3394e04b"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "undici-types@6.21.0",
+      "type": "library",
+      "name": "undici-types",
+      "version": "6.21.0",
+      "scope": "required",
+      "description": "A stand-alone types package for Undici",
+      "purl": "pkg:npm/undici-types@6.21.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/undici-types/-/undici-types-6.21.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/nodejs/undici.git"
+        },
+        {
+          "type": "website",
+          "url": "https://undici.nodejs.org"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/nodejs/undici/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "8b00d9aa0d10006ae0f516afe47e27d0ceb87379a4479f5c27ac10a7eec2e2723482c984c5a79d6982cd3b8e1e4f802d041c236d38863cc96dd8c7744fd1fd25"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "yauzl@3.4.0",
+      "type": "library",
+      "name": "yauzl",
+      "version": "3.4.0",
+      "scope": "required",
+      "author": "Josh Wolfe <thejoshwolfe@gmail.com>",
+      "description": "yet another unzip library for node",
+      "purl": "pkg:npm/yauzl@3.4.0",
+      "properties": [],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/yauzl/-/yauzl-3.4.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/thejoshwolfe/yauzl.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/thejoshwolfe/yauzl"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/thejoshwolfe/yauzl/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "8c81fdc8b47dc2aaf4c0e4b44e906fa3f83fd948191f9a9e3d56e3811962885d0162f399c9a0649cab05fb1f4886dd0eeacaa09c1f77ac220274e64579c26e0f"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "axiom-pilot-code@1.0.0-alpha.1",
+      "dependsOn": [
+        "ignore@7.0.5",
+        "yauzl@3.4.0",
+        "@types/node@22.19.15",
+        "@types/yauzl@2.10.3",
+        "prettier@3.6.2",
+        "typescript@5.9.3"
+      ]
+    },
+    {
+      "ref": "@types/node@22.19.15",
+      "dependsOn": [
+        "undici-types@6.21.0"
+      ]
+    },
+    {
+      "ref": "@types/yauzl@2.10.3",
+      "dependsOn": [
+        "@types/node@22.19.15"
+      ]
+    },
+    {
+      "ref": "ignore@7.0.5",
+      "dependsOn": []
+    },
+    {
+      "ref": "pend@1.2.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "prettier@3.6.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "typescript@5.9.3",
+      "dependsOn": []
+    },
+    {
+      "ref": "undici-types@6.21.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "yauzl@3.4.0",
+      "dependsOn": [
+        "pend@1.2.0"
+      ]
+    }
+  ]
+}
