@@ -1,0 +1,32 @@
+name: Windows one-click installer
+on:
+  push:
+    branches: [main]
+    paths:
+      - setup.bat
+      - .github/workflows/setup-windows.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  install:
+    name: Windows / Node ${{ matrix.node }}
+    runs-on: windows-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Run setup.bat from a clean checkout
+        shell: cmd
+        run: call setup.bat --ci
+      - name: Confirm installed program starts in new process
+        shell: cmd
+        run: |
+          call pilotcode --version
+          call pilotcode doctor
