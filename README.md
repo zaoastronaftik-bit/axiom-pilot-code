@@ -11,6 +11,16 @@
 - LM Studio **Local Server** started on `http://127.0.0.1:1234` (default). The CLI connects to `/v1`.
 - A model with working **tool calling** if you want it to edit files. Some uncensored/abliterated variants may not reliably emit tool calls.
 
+## Windows one-click installer (V1 alpha)
+
+For an easier **Windows 10/11** trial, install [Node.js 22 or newer](https://nodejs.org/en/download) and download [**setup.bat**](setup.bat) (click **Raw**, then save the file). Double-click the downloaded batch file. **Git is not needed.**
+
+The installer downloads a source snapshot pinned to commit `a37e6bc2390d484599f5f34f3540abb0ccf231ab` of `feat/v1-candidate`, uses the lockfile to build `1.0.0-alpha.1`, installs the package through npm globally, and runs `pilotcode --version` and `pilotcode doctor`. The script requests neither elevation nor account credentials. Inspect its source before running it: the alpha build is not a signed Windows application.
+
+After installation, open a **new CMD window** and enter `pilotcode doctor`. Install and start [LM Studio](https://lmstudio.ai/) with a local model to run the agent, or explicitly install the native llama.cpp runtime and GGUF model using the CLI's own commands. The batch installer does not download models or silently activate cloud inference.
+
+To uninstall the CLI later, use `npm uninstall -g axiom-pilot-code`. User sessions and models are not deleted by that command.
+
 ## Run from source
 
 ```powershell
