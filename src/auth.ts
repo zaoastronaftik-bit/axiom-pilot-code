@@ -162,12 +162,11 @@ export function accountOrigin(input: string): string {
     u.protocol !== 'https:' ||
     u.username ||
     u.password ||
-    u.pathname !== '/' ||
     u.search ||
     u.hash
   )
-    throw new AxiomError('ACCOUNT_URL', 'Account API must be an HTTPS origin');
-  return u.origin;
+    throw new AxiomError('ACCOUNT_URL', 'Account API must be an HTTPS endpoint');
+  return u.href.endsWith('/') ? u.href.slice(0, -1) : u.href;
 }
 export class DeviceAuth {
   readonly origin: string;
