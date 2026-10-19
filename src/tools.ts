@@ -120,7 +120,7 @@ export class Tools {
       case 'list_files': {
         const prefix =
           args.path === undefined ? '' : string(args.path, 'path', 1000).replace(/\/$/, '');
-        if (prefix && prefix !== '.') await projectPath(w.root, prefix);
+        if (prefix && prefix !== '.') await w.resolve(prefix);
         return (await w.files())
           .filter((f) => !prefix || prefix === '.' || f.startsWith(prefix + '/'))
           .slice(0, 200)
@@ -285,7 +285,7 @@ export class Tools {
         );
       case 'git_diff': {
         const file = string(args.path, 'path', 1000);
-        await projectPath(w.root, file);
+        await w.resolve(file);
         return JSON.stringify(
           await runCommand(
             'git',

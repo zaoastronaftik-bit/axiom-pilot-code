@@ -1,4 +1,4 @@
-import { constants } from 'node:fs';
+import { constants, realpathSync } from 'node:fs';
 import { lstat, realpath, readdir, open, mkdir, rename, unlink, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
@@ -26,7 +26,7 @@ export function protectedPath(relative: string): boolean {
 export async function projectPath(
   root: string,
   input: string,
-  { writing = false } = {},
+  { writing = false, expectedRoot }: { writing?: boolean; expectedRoot?: string } = {},
 ): Promise<string> {
   if (
     typeof input !== 'string' ||
@@ -46,9 +46,11 @@ export async function projectPath(
     throw new AxiomError('PATH', 'Ambiguous Windows path');
   if (protectedPath(input))
     throw new AxiomError('PROTECTED', 'Access to protected paths is disabled');
+  if ((await lstat(root)).isSymbolicLink())
+    throw new AxiomError('ROOT_CHANGED', 'Project root was replaced by a symbolic link');
   const rootReal = await realpath(root);
   const canonical = (p: string): string => (process.platform === 'win32' ? p.toLowerCase() : p);
-  if (canonical(rootReal) !== canonical(path.resolve(root)))
+  if (expectedRoot && canonical(rootReal) !== canonical(expectedRoot))
     throw new AxiomError('ROOT_CHANGED', 'Project root is no longer its original canonical path');
   const target = path.resolve(rootReal, ...parts);
   if (!inside(rootReal, target)) throw new AxiomError('PATH_ESCAPE', 'Path escapes project root');
@@ -132,17 +134,24 @@ interface Change {
   state: 'prepared' | 'applied' | 'undone';
 }
 export class Workspace {
+  readonly root: string;
   constructor(
-    readonly root: string,
+    root: string,
     readonly permissions: Permissions,
     readonly store: Store,
     readonly sessionId: string,
     readonly onRead: (file: string) => void = () => {},
     readonly signal?: AbortSignal,
-  ) {}
+  ) {
+    // Capture once: Windows 8.3 aliases and casing are normalized before any approval wait.
+    this.root = realpathSync(root);
+  }
+  resolve(file: string, writing = false): Promise<string> {
+    return projectPath(this.root, file, { writing, expectedRoot: this.root });
+  }
   async read(file: string): Promise<string> {
     this.signal?.throwIfAborted();
-    const text = await readText(await projectPath(this.root, file));
+    const text = await readText(await this.resolve(file));
     this.signal?.throwIfAborted();
     this.onRead(file);
     return text;
@@ -159,7 +168,7 @@ export class Workspace {
     if (Buffer.byteLength(after) > MAX_FILE || after.includes('\0'))
       throw new AxiomError('FILE_SIZE', 'Text must be at most 300 KB with no NUL');
     this.signal?.throwIfAborted();
-    const target = await projectPath(this.root, file, { writing: true });
+    const target = await this.resolve(file, true);
     if (target === this.root) throw new AxiomError('PATH', 'Cannot replace project root');
     const before = await this.existing(file);
     if (createOnly && before !== null)
@@ -170,7 +179,7 @@ export class Workspace {
     const detail = previewDiff(file, before, after);
     await this.permissions.require({ kind: 'write', target: file, cwd: this.root, detail });
     this.signal?.throwIfAborted();
-    await projectPath(this.root, file, { writing: true });
+    await this.resolve(file, true);
     if ((await this.existing(file)) !== before)
       throw new AxiomError('CONFLICT', 'File changed while awaiting approval; no changes made');
     const mode = before === null ? 0o644 : (await lstat(target)).mode & 0o777;
@@ -198,17 +207,17 @@ export class Workspace {
     mode: number,
   ): Promise<void> {
     this.signal?.throwIfAborted();
-    const target = await projectPath(this.root, file, { writing: true });
+    const target = await this.resolve(file, true);
     // Create each missing directory with a path check on both sides; never follow links intentionally.
     const parts = path.relative(this.root, path.dirname(target)).split(path.sep).filter(Boolean);
     let relative = '';
     for (const part of parts) {
       relative = relative ? relative + '/' + part : part;
-      const dir = await projectPath(this.root, relative, { writing: true });
+      const dir = await this.resolve(relative, true);
       await mkdir(dir).catch((e) => {
         if (e.code !== 'EEXIST') throw e;
       });
-      await projectPath(this.root, relative);
+      await this.resolve(relative);
     }
     const temp = path.join(path.dirname(target), `.axiom-${randomUUID()}.tmp`);
     const handle = await open(temp, 'wx', mode);
@@ -219,7 +228,7 @@ export class Workspace {
       await handle.close();
     }
     try {
-      await projectPath(this.root, file, { writing: true });
+      await this.resolve(file, true);
       if ((await this.existing(file)) !== before)
         throw new AxiomError('CONFLICT', 'Concurrent edit detected; replacement cancelled');
       this.signal?.throwIfAborted();
@@ -251,7 +260,7 @@ export class Workspace {
       cwd: this.root,
       detail: previewDiff(change.file, current, change.before ?? ''),
     });
-    const target = await projectPath(this.root, change.file);
+    const target = await this.resolve(change.file);
     this.signal?.throwIfAborted();
     if ((await this.existing(change.file)) !== current)
       throw new AxiomError('CONFLICT', 'File changed while approving undo');
@@ -286,7 +295,7 @@ export class Workspace {
         const result = [];
         for (const file of files.slice(0, limit)) {
           try {
-            await projectPath(this.root, file);
+            await this.resolve(file);
             result.push(file);
           } catch {
             /* omit symlinks */
@@ -311,9 +320,9 @@ export class Workspace {
       } catch {
         /* absent/unreadable ignore */
       }
-      const entries = (
-        await readdir(await projectPath(this.root, dir || '.'), { withFileTypes: true })
-      ).sort((a, b) => a.name.localeCompare(b.name, 'en'));
+      const entries = (await readdir(await this.resolve(dir || '.'), { withFileTypes: true })).sort(
+        (a, b) => a.name.localeCompare(b.name, 'en'),
+      );
       for (const entry of entries) {
         this.signal?.throwIfAborted();
         if (++scanned > limit * 4 || result.length >= limit) break;
