@@ -740,7 +740,8 @@ function structuredBackend(base: Backend, output: (e: Record<string, unknown>) =
 }
 if (
   process.argv[1] &&
-  (await realpath(process.argv[1]).catch(() => '')) === fileURLToPath(import.meta.url)
+  (await realpath(process.argv[1]).catch(() => '')) ===
+    (await realpath(fileURLToPath(import.meta.url)))
 )
   main().catch((error) => {
     const info = errorInfo(error);

@@ -8,9 +8,21 @@ import assert from 'node:assert/strict';
 import { npmCommand, runCommand, minimalEnv } from '../dist/command.js';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const temp = await mkdtemp(path.join(os.tmpdir(), 'axiom-package-'));
+// Installation smoke honors dependency transport/cache settings; no auth tokens or project secrets.
+const npmEnvironment = minimalEnv();
+for (const [key, value] of Object.entries(process.env))
+  if (
+    /^(?:https?_proxy|all_proxy|no_proxy|npm_config_(?:cache|proxy|https?_proxy|noproxy)|node_extra_ca_certs)$/i.test(
+      key,
+    )
+  )
+    npmEnvironment[key] = value;
 async function npm(args) {
   const cmd = await npmCommand(args);
-  const r = await runCommand(cmd.program, cmd.args, root, { timeoutMs: 120000 });
+  const r = await runCommand(cmd.program, cmd.args, root, {
+    timeoutMs: 120000,
+    env: npmEnvironment,
+  });
   assert.equal(r.exitCode, 0, r.stderr + r.stdout);
   return r.stdout;
 }
