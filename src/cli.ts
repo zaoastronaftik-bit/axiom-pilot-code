@@ -24,6 +24,7 @@ import { verify, discoverChecks } from './verify.js';
 import { installedVersion, latestVersion, updatePackage } from './updater.js';
 import { calibrate } from './autotune.js';
 import { DeviceAuth, OSSecretStore, accountOrigin, openBrowser } from './auth.js';
+import { uploadSnapshot, DEFAULT_ACCOUNT_API } from './sync.js';
 
 const HELP = `AxiomPilotCode — local coding agent (V1 candidate; see docs/READINESS.md)
 Usage:
@@ -39,6 +40,7 @@ Options: --url URL --ctx 4096 --gpu-layers N --cpu --time-ms 300000 --max-steps 
          --allow-write relative/path (repeat) --allow-command '["program","arg"]' (repeat)
          --approve-download exact-id --api-url https://account-api --local-only
          --structured-tools (explicit JSON tool protocol for models without native tools)
+         --sync-history (opt in to encrypted browser snapshot before session start)
          --help --version
 Approvals default to deny without a TTY. Command grants match the exact executable/argv.
 No background services, cloud fallback, automatic update checks or required account.
@@ -85,6 +87,7 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
       'api-url': { type: 'string' },
       'local-only': { type: 'boolean' },
       'structured-tools': { type: 'boolean' },
+      'sync-history': { type: 'boolean' },
     },
   });
   if (v.help) {
@@ -200,7 +203,7 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
   const progress = (bytes: number, total: number, rate: number): void =>
     output({ type: 'download-progress', bytes, total, bytesPerSecond: Math.round(rate) });
   const account = (): DeviceAuth => {
-    const origin = accountOrigin(v['api-url'] ?? process.env.AXIOM_API_URL ?? '');
+    const origin = accountOrigin(v['api-url'] ?? process.env.AXIOM_API_URL ?? DEFAULT_ACCOUNT_API);
     return new DeviceAuth(origin, new OSSecretStore(origin, store));
   };
   const auth = async (action: string, signal: AbortSignal): Promise<void> => {
@@ -394,6 +397,33 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
     session.model = backend.model;
     session.backend = backend.baseURL;
     await store.save(session);
+    // Explicit opt-in only. Never transmit project files or full conversation history by default.
+    if (v['sync-history'] || process.env.AXIOM_SYNC_HISTORY === '1') {
+      try {
+        const installed = await models.list();
+        const components = [
+          { id: 'core', name: 'AxiomPilotCode Core', version: await installedVersion(), source: 'built-in' },
+          { id: 'tools', name: 'File and command tools', version: 'built-in', source: 'AxiomPilotCode' },
+          { id: 'verify', name: 'Verify checks', version: 'built-in', source: 'AxiomPilotCode' },
+          ...installed.map(m => ({ id: m.id, name: 'Model: ' + m.id, version: m.quantization, source: 'local GGUF' }))
+        ];
+        const installedRuntime = await runtime.installed().catch(() => null);
+        if (installedRuntime) components.push({
+          id: 'llama-runtime',
+          name: 'llama.cpp runtime',
+          version: installedRuntime.record?.manifest?.id || 'installed',
+          source: 'managed locally'
+        });
+        await uploadSnapshot(
+          store, accountOrigin(v['api-url'] ?? process.env.AXIOM_API_URL ?? DEFAULT_ACCOUNT_API),
+          components, message => output({ type: 'sync', message })
+        );
+      } catch (error) {
+        output({ type: 'warning', message: 'Optional history sync unavailable: ' +
+          (error instanceof Error ? error.message : 'unknown error') +
+          '. The local coding session can continue.' });
+      }
+    }
     if (command === 'autotune') {
       output({
         type: 'calibration',
