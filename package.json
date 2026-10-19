@@ -1,0 +1,42 @@
+{
+  "name": "axiom-pilot-code",
+  "version": "0.1.0",
+  "description": "A local-first AI coding agent for LM Studio",
+  "type": "module",
+  "bin": {
+    "pilotcode": "./src/cli.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "start": "node ./src/cli.js",
+    "test": "node --test",
+    "check": "node --check src/cli.js && node --check src/agent.js && node --check src/tools.js && node --check src/backend.js",
+    "pack:dry": "npm pack --dry-run"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "keywords": [
+    "local-ai",
+    "coding-agent",
+    "lm-studio",
+    "cli",
+    "llm"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zaoastronaftik-bit/axiom-pilot-code.git"
+  },
+  "homepage": "https://github.com/zaoastronaftik-bit/axiom-pilot-code#readme",
+  "bugs": {
+    "url": "https://github.com/zaoastronaftik-bit/axiom-pilot-code/issues"
+  }
+}
