@@ -10,7 +10,8 @@ import { redact } from './core.js';
 
 export const DEFAULT_ACCOUNT_API = 'https://vkmmqhnuvphiyblyjgif.supabase.co/functions/v1/axiom-bridge';
 const hash = (input: string): string => createHash('sha256').update(input).digest('hex');
-const encoded = (bytes: ArrayBuffer | Buffer | Uint8Array): string => Buffer.from(bytes).toString('base64url');
+const encoded = (bytes: ArrayBuffer | Uint8Array): string =>
+  Buffer.from(bytes instanceof ArrayBuffer ? new Uint8Array(bytes) : bytes).toString('base64url');
 const limitText = (value: unknown, max: number) => typeof value === 'string' ? redact(value).slice(0, max) : '';
 
 export interface SyncSnapshot {
