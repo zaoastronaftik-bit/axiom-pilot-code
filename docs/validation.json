@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "recordedDate": "2026-10-19",
+  "release": "1.0.0-alpha.1",
+  "status": "candidate",
+  "cliCodeCommit": "b2227692090211984a214d67dffbcb88e27f121e",
+  "websiteCommit": "40565a9d438497159e98b02a3911194251c4079b",
+  "local": {
+    "platform": "linux-x64",
+    "node": "24.19.0",
+    "nodeTests": {
+      "passed": 82,
+      "failed": 0
+    },
+    "pythonValidatorTests": {
+      "passed": 5,
+      "failed": 0
+    },
+    "websiteUnitTests": {
+      "passed": 7,
+      "failed": 0
+    },
+    "typeCheck": "passed",
+    "protocolSmoke": "passed",
+    "isolatedPackageInstall": "passed",
+    "productionAuditKnownAdvisories": 0
+  },
+  "hostedCI": {
+    "cliURL": "https://github.com/zaoastronaftik-bit/axiom-pilot-code/actions/runs/39209777952",
+    "matrix": [
+      {
+        "os": "ubuntu-latest",
+        "node": 22,
+        "conclusion": "success"
+      },
+      {
+        "os": "ubuntu-latest",
+        "node": 24,
+        "conclusion": "success"
+      },
+      {
+        "os": "windows-latest",
+        "node": 22,
+        "conclusion": "success"
+      },
+      {
+        "os": "windows-latest",
+        "node": 24,
+        "conclusion": "success"
+      }
+    ],
+    "windowsImage": "Windows Server 2025",
+    "gpuJob": "skipped",
+    "websiteURL": "https://github.com/zaoastronaftik-bit/axiom-pilot-code.PAGES/actions/runs/39183076059",
+    "websiteConclusion": "success"
+  },
+  "notPerformed": [
+    "Windows 11 NVIDIA 12GB native inference acceptance",
+    "Real-model baseline/agent AxiomBench",
+    "Live HTTPS database-backed device authorization and revocation",
+    "CUDA training and LoRA export/inference validation",
+    "Published npm update/rollback acceptance",
+    "Publisher signature/attestation verification"
+  ],
+  "npmPublished": false
+}

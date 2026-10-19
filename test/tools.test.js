@@ -22,10 +22,10 @@ test('file tool rejects traversal, absolute paths, and protected files', async (
 }));
 
 test('file tool does not follow symlinks outside project', async () => fixture(async ({ root, outside }) => {
-  await writeFile(join(outside, 'secret.txt'), 'private');
+  await writeFile(join(outside, 'outside.txt'), 'private');
   await symlink(outside, join(root, 'external'), process.platform === 'win32' ? 'junction' : 'dir');
-  await assert.rejects(projectPath(root, 'external/secret.txt'), /escapes/);
-  await assert.rejects(projectPath(root, 'external/new.txt', { writing: true }), /escapes/);
+  await assert.rejects(projectPath(root, 'external/outside.txt'), /[Ss]ymbolic link/);
+  await assert.rejects(projectPath(root, 'external/new.txt', { writing: true }), /[Ss]ymbolic link/);
 }));
 
 test('writes require confirmation, can create nested file and read it', async () => fixture(async ({ base, root }) => {

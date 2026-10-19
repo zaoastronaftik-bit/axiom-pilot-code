@@ -1,24 +1,37 @@
 {
   "name": "axiom-pilot-code",
-  "version": "0.1.0",
-  "description": "A local-first AI coding agent for LM Studio",
+  "version": "1.0.0-alpha.1",
+  "description": "Local-first coding agent with managed llama.cpp and LM Studio compatibility",
   "type": "module",
   "bin": {
-    "pilotcode": "./src/cli.js"
+    "pilotcode": "./dist/cli.js"
   },
   "files": [
-    "src",
+    "dist",
+    "src/cli.js",
+    "catalogs",
+    "licenses",
     "README.md",
-    "LICENSE"
+    "README.ru.md",
+    "LICENSE",
+    "NOTICE",
+    "docs",
+    "SECURITY.md",
+    "CHANGELOG.md"
   ],
   "scripts": {
-    "start": "node ./src/cli.js",
-    "test": "node --test",
-    "check": "node --check src/cli.js && node --check src/agent.js && node --check src/tools.js && node --check src/backend.js",
-    "pack:dry": "npm pack --dry-run"
+    "start": "node ./dist/cli.js",
+    "build": "tsc",
+    "check": "tsc --noEmit",
+    "test": "npm run build && node --test test/*.test.js test/*.test.mjs",
+    "smoke": "npm run build && node scripts/smoke.mjs",
+    "smoke:gpu": "npm run build && node scripts/gpu-smoke.mjs",
+    "pack:dry": "npm pack --dry-run",
+    "prepack": "npm run build",
+    "smoke:package": "npm run build && node scripts/package-smoke.mjs"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22"
   },
   "keywords": [
     "local-ai",
@@ -38,5 +51,15 @@
   "homepage": "https://github.com/zaoastronaftik-bit/axiom-pilot-code#readme",
   "bugs": {
     "url": "https://github.com/zaoastronaftik-bit/axiom-pilot-code/issues"
+  },
+  "dependencies": {
+    "ignore": "7.0.5",
+    "yauzl": "3.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.15",
+    "@types/yauzl": "2.10.3",
+    "prettier": "3.6.2",
+    "typescript": "5.9.3"
   }
 }

@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "id": "llama-b11669-win-cuda-12.4-x64",
+  "version": "b11669",
+  "platform": "win32",
+  "arch": "x64",
+  "source": "https://github.com/ggml-org/llama.cpp/releases/tag/b11669",
+  "license": "MIT AND NVIDIA-CUDA-EULA",
+  "licenseUrls": [
+    "https://github.com/ggml-org/llama.cpp/blob/b11669/LICENSE",
+    "https://docs.nvidia.com/cuda/archive/12.4.0/eula/index.html"
+  ],
+  "reviewedAt": "2026-10-19",
+  "validation": "metadata-verified; Windows GPU smoke pending",
+  "assets": [
+    {
+      "name": "cudart-llama-bin-win-cuda-12.4-x64.zip",
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11669/cudart-llama-bin-win-cuda-12.4-x64.zip",
+      "size": 391443627,
+      "sha256": "8c79a9b226de4b3cacfd1f83d24f962d0773be79f1e7b75c6af4ded7e32ae1d6"
+    },
+    {
+      "name": "llama-b11669-bin-win-cuda-12.4-x64.zip",
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11669/llama-b11669-bin-win-cuda-12.4-x64.zip",
+      "size": 266582698,
+      "sha256": "c2da1f73ed176ae093ac5aceb978a7b167a16113f6d74c6789eeaee2135cb8dc"
+    }
+  ]
+}

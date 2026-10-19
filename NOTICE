@@ -1,0 +1,19 @@
+AxiomPilotCode — MIT, Copyright (c) 2026 AxiomPilotCode contributors.
+
+This package manages third-party software; llama.cpp/CUDA/model weights are not authored by AxiomPilotCode and are not bundled in the npm tarball.
+
+Node production dependencies (exact versions in package-lock.json):
+- ignore 7.0.5 — MIT, https://github.com/kaelzhang/node-ignore
+- yauzl 3.4.0 — MIT, https://github.com/thejoshwolfe/yauzl
+- pend 1.2.0 (transitive) — MIT, https://github.com/andrewrk/node-pend
+Their license texts are in licenses/. Build-only dependencies are listed in the SBOM/lockfile.
+
+Optional direct upstream downloads, only with user consent:
+- llama.cpp b11669, MIT, source https://github.com/ggml-org/llama.cpp, copyright and full text in licenses/llama.cpp-MIT.txt. Runtime manager downloads original upstream release archives, without rebranding or binary modification. Pinned sizes/digests/source in catalogs/runtime.json.
+- NVIDIA CUDA runtime libraries remain subject to NVIDIA's CUDA Toolkit EULA: https://docs.nvidia.com/cuda/eula/index.html . Consent shows this separately; MIT does not relicense CUDA. The installer downloads the upstream dependency archive, not an Axiom redistribution. Future bundled distribution requires a separate redistribution review.
+- Qwen/Qwen2.5-Coder-7B-Instruct-GGUF, Apache-2.0, official model/revision/license URL in catalogs/models.json. Weights are downloaded from the official publisher and never bundled. Local imports require the user to provide license/source; those claims are not independently verified.
+- LM Studio is an external user-installed program with its own terms. Nothing from LM Studio is packaged, renamed or redistributed here.
+
+Experimental Python dependencies/checkpoints have independent licenses and CUDA/platform requirements. Review training/requirements.txt and the chosen checkpoint's model card before installation/training. No user projects or datasets are included as a licensed training corpus.
+
+SHA256 integrity confirms pinned bytes, not a publisher signature or legal entitlement. Sources and dependency metadata were checked during development; review the full applicable licenses for your intended distribution.
